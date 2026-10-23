@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView
@@ -6,7 +7,7 @@ from posts.forms import PostForm
 from posts.models import Post
 
 
-class PostListView(ListView):
+class PostListView(LoginRequiredMixin, ListView):
     model = Post
     context_object_name = "posts"
     template_name = "posts/post_list.html"
