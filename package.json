@@ -1,0 +1,16 @@
+{
+  "name": "photo-kruzhok",
+  "private": true,
+  "packageManager": "pnpm@12.15.0",
+  "engines": {
+    "node": "22.23.4"
+  },
+  "scripts": {
+    "lint": "turbo lint",
+    "test": "turbo test",
+    "build": "turbo build"
+  },
+  "devDependencies": {
+    "turbo": "2.11.10"
+  }
+}

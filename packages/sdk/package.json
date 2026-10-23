@@ -1,0 +1,9 @@
+{
+  "name": "@photo-kruzhok/sdk",
+  "private": true,
+  "scripts": {
+    "lint": "node -e \"process.exit(0)\"",
+    "test": "node --test smoke.test.js",
+    "build": "node -e \"process.exit(0)\""
+  }
+}
