@@ -1,4 +1,5 @@
 import os
+import sys
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -12,7 +13,16 @@ MEDIA_ROOT = BASE_DIR / "media"
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ["SECRET_KEY"]
+def _secret_key():
+    key = os.getenv("SECRET_KEY")
+    if key:
+        return key
+    if "pytest" in sys.modules:
+        return "test-secret-key"
+    raise RuntimeError("SECRET_KEY is required")
+
+
+SECRET_KEY = _secret_key()
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -23,7 +33,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    "users",
     "posts",
     "feed",
     "rest_framework",
@@ -79,15 +88,15 @@ WSGI_APPLICATION = "core.wsgi.application"
 
 def _databases():
     url = os.getenv("DATABASE_URL")
-    if os.getenv("USE_SQLITE") == "1" or not url:
-        if os.getenv("USE_SQLITE") != "1" and not url:
-            raise RuntimeError("DATABASE_URL is required outside tests")
-        return {
-            "default": {
-                "ENGINE": "django.db.backends.sqlite3",
-                "NAME": ":memory:",
+    if not url:
+        if "pytest" in sys.modules:
+            return {
+                "default": {
+                    "ENGINE": "django.db.backends.sqlite3",
+                    "NAME": ":memory:",
+                }
             }
-        }
+        raise RuntimeError("DATABASE_URL is required outside tests")
     return {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
