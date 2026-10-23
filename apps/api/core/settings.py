@@ -1,19 +1,18 @@
 import os
 from pathlib import Path
 
-from dotenv import load_dotenv
-
-load_dotenv()
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = os.environ["SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -27,6 +26,8 @@ INSTALLED_APPS = [
     "users",
     "posts",
     "feed",
+    "rest_framework",
+    "drf_spectacular",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -75,12 +76,31 @@ WSGI_APPLICATION = "core.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+
+def _databases():
+    url = os.getenv("DATABASE_URL")
+    if os.getenv("USE_SQLITE") == "1" or not url:
+        if os.getenv("USE_SQLITE") != "1" and not url:
+            raise RuntimeError("DATABASE_URL is required outside tests")
+        return {
+            "default": {
+                "ENGINE": "django.db.backends.sqlite3",
+                "NAME": ":memory:",
+            }
+        }
+    return {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": url.rsplit("/", 1)[-1],
+            "USER": url.split("://", 1)[1].split(":", 1)[0],
+            "PASSWORD": url.split("://", 1)[1].split(":", 1)[1].split("@", 1)[0],
+            "HOST": url.split("@", 1)[1].split(":", 1)[0],
+            "PORT": url.split("@", 1)[1].split(":", 1)[1].split("/", 1)[0],
+        }
     }
-}
+
+
+DATABASES = _databases()
 
 
 # Password validation
@@ -108,10 +128,9 @@ AUTHENTICATION_BACKENDS = [
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
-ACCOUNT_AUTHENTICATION_METHOD = "username_email"
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"
-ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_LOGIN_METHODS = {"username", "email"}
+ACCOUNT_SIGNUP_FIELDS = ["email*", "username*", "password1*", "password2*"]
+ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_USERNAME_MIN_LENGTH = 5
 ACCOUNT_USERNAME_MAX_LENGTH = 30
 
