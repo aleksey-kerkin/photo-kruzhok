@@ -2,8 +2,17 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
+from rest_framework.exceptions import NotFound
+from rest_framework.views import APIView
+
+
+class _UnregisteredApiRoute(APIView):
+    def initial(self, request, *args, **kwargs):
+        raise NotFound()
+
 
 urlpatterns = [
+    path("api/<path:path>", _UnregisteredApiRoute.as_view()),
     path("admin/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
     path("posts/", include(("posts.urls", "posts"), namespace="posts")),
