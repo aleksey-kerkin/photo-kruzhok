@@ -12,9 +12,10 @@ class _UnregisteredApiRoute(APIView):
 
 
 urlpatterns = [
-    path("api/<path:path>", _UnregisteredApiRoute.as_view()),
     path("admin/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
     path("posts/", include(("posts.urls", "posts"), namespace="posts")),
     path("", include(("feed.urls", "feed"), namespace="feed")),
+    # API routes must be registered before this catch-all.
+    path("api/<path:path>", _UnregisteredApiRoute.as_view()),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
