@@ -9,9 +9,11 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@tanstack/react-query": "5.104.5",
     "react": "19.3.1",
     "react-dom": "19.3.1",
-    "react-router-dom": "7.18.4"
+    "react-router-dom": "7.18.4",
+    "zustand": "5.0.16"
   },
   "devDependencies": {
     "@testing-library/react": "16.3.3",
