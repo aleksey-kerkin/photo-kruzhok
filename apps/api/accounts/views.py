@@ -4,7 +4,8 @@ from datetime import timedelta
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from django.utils import timezone
-from rest_framework.exceptions import ValidationError
+from rest_framework.authentication import BaseAuthentication
+from rest_framework.exceptions import AuthenticationFailed, ValidationError
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -14,6 +15,14 @@ from accounts.hashes import hash_token
 from accounts.models import Profile, RefreshToken
 
 User = get_user_model()
+
+
+class _LoginAuthentication(BaseAuthentication):
+    def authenticate(self, request):
+        return None
+
+    def authenticate_header(self, request):
+        return "Bearer"
 
 
 def _set_refresh_cookie(response, raw):
@@ -36,6 +45,24 @@ def _issue_refresh(user):
         expires_at=timezone.now() + timedelta(days=7),
     )
     return raw
+
+
+class LoginView(APIView):
+    authentication_classes = [_LoginAuthentication]
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        value = (request.data.get("username") or "").strip()
+        password = request.data.get("password") or ""
+        if "@" in value:
+            user = User.objects.filter(email=value).first()
+        else:
+            user = User.objects.filter(username=value).first()
+        if user is None or not user.check_password(password):
+            raise AuthenticationFailed()
+        response = Response({"access": issue_access_token(user)})
+        _set_refresh_cookie(response, _issue_refresh(user))
+        return response
 
 
 class RegisterView(APIView):
