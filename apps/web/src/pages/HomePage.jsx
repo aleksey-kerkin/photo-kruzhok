@@ -34,9 +34,9 @@ export default function HomePage() {
       <h1>Лента</h1>
       {isPending ? <p>Загрузка…</p> : null}
       {error ? <p>Не удалось загрузить ленту.</p> : null}
-      <ul>
+      <ul className="pk-feed">
         {posts.map((post) => (
-          <li key={post.id}>
+          <li key={post.id} className="pk-feed__card">
             <p>{post.caption ?? post.text ?? `Пост ${post.id}`}</p>
             <button
               type="button"

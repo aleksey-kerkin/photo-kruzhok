@@ -1,7 +1,9 @@
-import { QueryClient } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { FEED_QUERY_KEY, setLiked } from "./cache.js";
+import HomePage from "./pages/HomePage.jsx";
 
 function makeFeedData(post) {
   return {
@@ -9,6 +11,23 @@ function makeFeedData(post) {
     pageParams: [undefined],
   };
 }
+
+describe("feed layout", () => {
+  it("wraps posts in shared pk-feed layout classes", () => {
+    const post = { id: 1, caption: "Тест", likes_count: 0, liked_by_me: false };
+    const cache = new QueryClient();
+    cache.setQueryData(FEED_QUERY_KEY, makeFeedData(post));
+
+    const { container } = render(
+      <QueryClientProvider client={cache}>
+        <HomePage />
+      </QueryClientProvider>,
+    );
+
+    expect(container.querySelector(".pk-feed")).not.toBeNull();
+    expect(container.querySelector(".pk-feed__card")).not.toBeNull();
+  });
+});
 
 describe("setLiked", () => {
   it("flips a post from unliked to liked and restores the previous snapshot", () => {
