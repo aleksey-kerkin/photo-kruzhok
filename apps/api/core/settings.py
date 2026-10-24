@@ -171,5 +171,8 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "accounts.authentication.AccessTokenAuthentication",
+    ],
     "EXCEPTION_HANDLER": "core.exceptions.api_exception_handler",
 }

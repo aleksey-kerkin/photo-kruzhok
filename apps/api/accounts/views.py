@@ -6,7 +6,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.utils import timezone
 from rest_framework.authentication import BaseAuthentication
 from rest_framework.exceptions import AuthenticationFailed, ValidationError
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -110,4 +110,33 @@ class RegisterView(APIView):
         Profile.objects.create(user=user)
         response = Response({"access": issue_access_token(user)}, status=201)
         _set_refresh_cookie(response, _issue_refresh(user))
+        return response
+
+
+class MeView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        profile = request.user.profile
+        return Response(
+            {
+                "username": request.user.username,
+                "email": request.user.email,
+                "display_name": profile.display_name,
+                "bio": profile.bio,
+                "is_leader": profile.is_leader,
+            }
+        )
+
+
+class LogoutView(APIView):
+    authentication_classes = []
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        raw = request.COOKIES.get("pk_refresh")
+        if raw:
+            RefreshToken.objects.filter(token_hash=hash_token(raw)).delete()
+        response = Response(status=204)
+        response.delete_cookie("pk_refresh", path="/api/auth", samesite="Lax")
         return response
