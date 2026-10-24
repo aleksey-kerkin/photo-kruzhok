@@ -1,0 +1,23 @@
+---
+const { title, open = false, dialogId = `pk-dialog-${Math.random().toString(36).slice(2)}`, class: className, ...rest } =
+  Astro.props;
+const classes = ["pk-dialog", className].filter(Boolean).join(" ");
+---
+
+<dialog id={dialogId} class={classes} open={open || undefined} {...rest}>
+  <div class="pk-dialog__panel">
+    {title ? <h2 class="pk-dialog__title">{title}</h2> : null}
+    <div class="pk-dialog__body">
+      <slot />
+    </div>
+  </div>
+</dialog>
+
+<script type="module" define:vars={{ dialogId }}>
+  import { trapFocus } from "./focusTrap.js";
+
+  const dialog = document.getElementById(dialogId);
+  if (dialog?.open) {
+    trapFocus(dialog.querySelector(".pk-dialog__panel") ?? dialog);
+  }
+</script>

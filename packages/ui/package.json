@@ -1,9 +1,38 @@
 {
   "name": "@photo-kruzhok/ui",
   "private": true,
+  "type": "module",
   "scripts": {
-    "lint": "eslint smoke.test.js",
-    "test": "node --test smoke.test.js src/tokens.test.js",
-    "build": "node -e \"process.exit(0)\""
+    "lint": "eslint smoke.test.js src/tokens.test.js vitest.config.js",
+    "test": "node --test smoke.test.js src/tokens.test.js && vitest run",
+    "build": "sass src/index.scss dist/ui.css --style=compressed",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build -o dist/storybook"
+  },
+  "exports": {
+    "./ui.css": "./dist/ui.css",
+    "./Button": "./src/Button.jsx",
+    "./Field": "./src/Field.jsx",
+    "./Dialog": "./src/Dialog.jsx"
+  },
+  "devDependencies": {
+    "@storybook/addon-docs": "10.6.3",
+    "@storybook/react-vite": "10.6.3",
+    "@testing-library/dom": "10.4.2",
+    "@testing-library/react": "16.3.3",
+    "@vitejs/plugin-react": "6.1.2",
+    "astro": "7.4.2",
+    "jsdom": "30.1.3",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "sass": "1.106.1",
+    "storybook": "10.6.3",
+    "vite": "8.3.5",
+    "vitest": "5.0.5",
+    "vue": "3.5.44"
+  },
+  "peerDependencies": {
+    "react": "19.3.1",
+    "vue": "3.5.44"
   }
 }
