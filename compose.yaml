@@ -1,0 +1,32 @@
+services:
+  api:
+    build: ./apps/api
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+  postgres:
+    image: postgres:16.10
+    environment:
+      POSTGRES_USER: photo
+      POSTGRES_PASSWORD: photo
+      POSTGRES_DB: photo
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U photo -d photo"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  minio:
+    image: minio/minio:RELEASE.2025-10-15T17-29-55Z
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: photo
+      MINIO_ROOT_PASSWORD: photo-secret
+    ports:
+      - "9000:9000"
+      - "9001:9001"
