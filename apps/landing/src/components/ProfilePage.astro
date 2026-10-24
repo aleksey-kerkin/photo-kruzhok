@@ -1,0 +1,67 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import {
+  createPublicClient,
+  fetchProfile,
+  fetchProfilePosts,
+} from "../publicApi.js";
+
+const { username } = Astro.props;
+
+const client = createPublicClient();
+const profile = await fetchProfile(client, username);
+const postsPage = profile ? await fetchProfilePosts(client, username) : null;
+const posts = postsPage?.results ?? [];
+const displayName = profile?.display_name ?? username;
+const webAppUrl = import.meta.env.PUBLIC_WEB_APP_URL ?? "http://localhost:5173";
+
+function postAlt(post) {
+  if (post.caption) {
+    return post.caption;
+  }
+  return `Фото ${displayName}`;
+}
+---
+
+<BaseLayout title={displayName}>
+  <p><a href="/">На главную</a></p>
+
+  {
+    profile ? (
+      <header>
+        {profile.avatar ? <img src={profile.avatar} alt="" width="96" height="96" /> : null}
+        <h1>{displayName}</h1>
+        {profile.bio ? <p>{profile.bio}</p> : null}
+      </header>
+    ) : (
+      <p>Профиль не найден.</p>
+    )
+  }
+
+  {
+    profile && posts.length > 0 ? (
+      <ul class="landing-profile-posts">
+        {posts.map((post) => (
+          <li>
+            <figure>
+              {post.image ? (
+                <img
+                  src={post.image}
+                  alt={postAlt(post)}
+                  width={post.width ?? undefined}
+                  height={post.height ?? undefined}
+                  loading="lazy"
+                />
+              ) : null}
+              {post.caption ? <figcaption>{post.caption}</figcaption> : null}
+            </figure>
+          </li>
+        ))}
+      </ul>
+    ) : null
+  }
+
+  <p>
+    <a href={webAppUrl}>Открыть приложение</a>
+  </p>
+</BaseLayout>

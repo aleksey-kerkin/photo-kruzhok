@@ -1,6 +1,9 @@
 {
   "name": "@photo-kruzhok/sdk",
   "private": true,
+  "exports": {
+    ".": "./src/client.js"
+  },
   "scripts": {
     "lint": "eslint smoke.test.js client.test.js src/client.js",
     "test": "node --test smoke.test.js client.test.js",

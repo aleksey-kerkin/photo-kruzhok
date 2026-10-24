@@ -1,0 +1,20 @@
+---
+import "@photo-kruzhok/ui/ui.css";
+import "../styles/landing.scss";
+
+const { title = "Фото-кружок" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="landing-shell">
+      <slot />
+    </div>
+  </body>
+</html>

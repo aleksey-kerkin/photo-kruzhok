@@ -1,0 +1,51 @@
+---
+export const prerender = true;
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { DEMO_USERNAMES } from "../demoUsers.js";
+import { createPublicClient, fetchProfile } from "../publicApi.js";
+
+const webAppUrl = import.meta.env.PUBLIC_WEB_APP_URL ?? "http://localhost:5173";
+const client = createPublicClient();
+const profiles = await Promise.all(
+  DEMO_USERNAMES.map(async (username) => {
+    const profile = await fetchProfile(client, username);
+    return {
+      username,
+      label: profile?.display_name ?? username,
+    };
+  }),
+);
+---
+
+<BaseLayout title="Фото-кружок">
+  <header>
+    <h1>Фото-кружок</h1>
+    <p>
+      <a href={webAppUrl}>Открыть приложение</a>
+    </p>
+  </header>
+
+  <section>
+    <h2>Витрина</h2>
+    <p>Витрина появится здесь, когда API подключён к сборке.</p>
+  </section>
+
+  <section>
+    <h2>Анонсы</h2>
+    <p>Анонсы появятся здесь, когда API подключён к сборке.</p>
+  </section>
+
+  <section>
+    <h2>Профили</h2>
+    <ul class="landing-profiles">
+      {
+        profiles.map(({ username, label }) => (
+          <li>
+            <a href={`/profiles/${username}`}>{label}</a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>

@@ -1,9 +1,18 @@
 {
   "name": "@photo-kruzhok/landing",
   "private": true,
+  "type": "module",
   "scripts": {
-    "lint": "eslint smoke.test.js",
-    "test": "node --test smoke.test.js",
-    "build": "node -e \"process.exit(0)\""
+    "dev": "astro dev --port 4321",
+    "lint": "eslint smoke.test.js astro.config.mjs src",
+    "test": "pnpm run build && node --test smoke.test.js",
+    "build": "astro build && cp dist/client/index.html dist/index.html"
+  },
+  "dependencies": {
+    "@astrojs/node": "11.1.9",
+    "@photo-kruzhok/sdk": "workspace:*",
+    "@photo-kruzhok/ui": "workspace:*",
+    "astro": "7.4.2",
+    "sass": "1.106.1"
   }
 }
