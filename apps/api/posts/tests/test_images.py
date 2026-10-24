@@ -1,3 +1,4 @@
+import io
 from pathlib import Path
 
 import pytest
@@ -31,3 +32,12 @@ def test_build_derivatives_strips_gps_and_hashes_stably(sample_jpeg_bytes):
     assert "gps" not in second["exif"]
     assert first["content_hash"] == second["content_hash"]
     assert len(first["content_hash"]) == 64
+
+
+def test_build_derivatives_includes_all_widths_for_wide_image():
+    buf = io.BytesIO()
+    Image.new("RGB", (2000, 1000), color=(10, 20, 30)).save(buf, format="JPEG")
+    result = build_derivatives(_uploaded_file(buf.getvalue()))
+
+    assert set(result["files"]["webp"].keys()) == {480, 960, 1600}
+    assert set(result["files"]["avif"].keys()) == {480, 960, 1600}
