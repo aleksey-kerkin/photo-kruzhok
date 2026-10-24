@@ -2,8 +2,12 @@
   "name": "@photo-kruzhok/sdk",
   "private": true,
   "scripts": {
-    "lint": "eslint smoke.test.js",
-    "test": "node --test smoke.test.js",
-    "build": "node -e \"process.exit(0)\""
+    "lint": "eslint smoke.test.js client.test.js src/client.js",
+    "test": "node --test smoke.test.js client.test.js",
+    "build": "node -e \"process.exit(0)\"",
+    "generate": "openapi-typescript http://localhost:8000/api/schema/ -o src/schema.d.ts"
+  },
+  "devDependencies": {
+    "openapi-typescript": "7.13.0"
   }
 }
