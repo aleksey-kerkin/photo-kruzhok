@@ -113,6 +113,100 @@ def test_owner_deletes_post(api_client, member, sample_jpeg_bytes):
     assert not Post.objects.filter(pk=post_id).exists()
 
 
+@pytest.fixture
+def leader(db):
+    user = get_user_model().objects.create_user(
+        username="leader01",
+        email="leader@example.com",
+        password="correct-horse-battery",
+    )
+    Profile.objects.create(user=user, is_leader=True)
+    return user
+
+
+@pytest.mark.django_db
+def test_leader_hides_post_and_lists_hidden(
+    api_client, member, leader, sample_jpeg_bytes
+):
+    create = api_client.post(
+        "/api/posts",
+        {"caption": "To hide", "image": _upload(sample_jpeg_bytes)},
+        **_auth(member),
+        format="multipart",
+    )
+    post_id = create.json()["id"]
+
+    hide = api_client.post(f"/api/posts/{post_id}/hide", **_auth(leader))
+    assert hide.status_code == 200
+    assert hide.json()["status"] == "hidden"
+
+    hidden_list = api_client.get("/api/posts?status=hidden", **_auth(leader))
+    assert hidden_list.status_code == 200
+    ids = [item["id"] for item in hidden_list.json()["results"]]
+    assert post_id in ids
+
+
+@pytest.mark.django_db
+def test_non_author_member_gets_404_after_leader_hides(
+    api_client, member, leader, sample_jpeg_bytes
+):
+    other = get_user_model().objects.create_user(
+        username="boris03",
+        email="boris03@example.com",
+        password="correct-horse-battery",
+    )
+    Profile.objects.create(user=other)
+
+    create = api_client.post(
+        "/api/posts",
+        {"caption": "Secret", "image": _upload(sample_jpeg_bytes)},
+        **_auth(member),
+        format="multipart",
+    )
+    post_id = create.json()["id"]
+    api_client.post(f"/api/posts/{post_id}/hide", **_auth(leader))
+
+    response = api_client.get(f"/api/posts/{post_id}", **_auth(other))
+    assert response.status_code == 404
+
+
+@pytest.mark.django_db
+def test_non_leader_hide_returns_403(api_client, member, sample_jpeg_bytes):
+    create = api_client.post(
+        "/api/posts",
+        {"caption": "No hide", "image": _upload(sample_jpeg_bytes)},
+        **_auth(member),
+        format="multipart",
+    )
+    post_id = create.json()["id"]
+
+    response = api_client.post(f"/api/posts/{post_id}/hide", **_auth(member))
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db
+def test_leader_restores_post_guest_sees_it_again(
+    api_client, member, leader, sample_jpeg_bytes
+):
+    create = api_client.post(
+        "/api/posts",
+        {"caption": "Restore me", "image": _upload(sample_jpeg_bytes)},
+        **_auth(member),
+        format="multipart",
+    )
+    post_id = create.json()["id"]
+    api_client.post(f"/api/posts/{post_id}/hide", **_auth(leader))
+
+    restore = api_client.post(f"/api/posts/{post_id}/restore", **_auth(leader))
+    assert restore.status_code == 200
+    assert restore.json()["status"] == "visible"
+
+    guest_list = api_client.get("/api/posts")
+    assert guest_list.status_code == 200
+    ids = [item["id"] for item in guest_list.json()["results"]]
+    assert post_id in ids
+
+
 @pytest.mark.django_db
 def test_stranger_gets_404_for_hidden_post(api_client, member, sample_jpeg_bytes):
     other = get_user_model().objects.create_user(

@@ -8,9 +8,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from core.pagination import CursorPagination
+from posts.images import DERIVATIVE_WIDTHS
 from posts.models import Post
-
-DERIVATIVE_WIDTHS = (480, 960, 1600)
 
 
 class Conflict(APIException):

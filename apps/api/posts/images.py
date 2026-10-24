@@ -158,9 +158,8 @@ def _encode_derivatives(image):
             continue
         scale = target_width / rgb.width
         resized = vips_image.resize(scale)
-        actual_width = resized.width
-        files["webp"][actual_width] = resized.webpsave_buffer(Q=80)
-        files["avif"][actual_width] = resized.heifsave_buffer(
+        files["webp"][target_width] = resized.webpsave_buffer(Q=80)
+        files["avif"][target_width] = resized.heifsave_buffer(
             compression="av1",
             Q=50,
         )
