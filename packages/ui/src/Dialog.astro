@@ -13,11 +13,54 @@ const classes = ["pk-dialog", className].filter(Boolean).join(" ");
   </div>
 </dialog>
 
-<script type="module" define:vars={{ dialogId }}>
+<script type="module" define:vars={{ dialogId, open }}>
   import { trapFocus } from "./focusTrap.js";
 
   const dialog = document.getElementById(dialogId);
-  if (dialog?.open) {
-    trapFocus(dialog.querySelector(".pk-dialog__panel") ?? dialog);
+  if (!dialog) {
+    return;
   }
+
+  let releaseFocus = null;
+
+  const observer = new MutationObserver(() => {
+    syncOpen(dialog.hasAttribute("open"));
+  });
+
+  function observeOpen() {
+    observer.observe(dialog, { attributes: true, attributeFilter: ["open"] });
+  }
+
+  function syncOpen(isOpen) {
+    observer.disconnect();
+
+    releaseFocus?.();
+    releaseFocus = null;
+
+    if (isOpen) {
+      if (!dialog.matches(":modal")) {
+        dialog.removeAttribute("open");
+        dialog.showModal();
+      }
+      const panel = dialog.querySelector(".pk-dialog__panel");
+      releaseFocus = trapFocus(panel ?? dialog);
+      observeOpen();
+      return;
+    }
+
+    if (dialog.open) {
+      dialog.close();
+    }
+
+    observeOpen();
+  }
+
+  function handleClose() {
+    releaseFocus?.();
+    releaseFocus = null;
+  }
+
+  dialog.addEventListener("close", handleClose);
+
+  syncOpen(open);
 </script>
