@@ -9,8 +9,13 @@ from rest_framework.views import APIView
 
 from core.health import HealthView
 from posts.api import (
+    CommentDetailView,
+    CommentHideView,
+    CommentRestoreView,
+    PostCommentListCreateView,
     PostDetailView,
     PostHideView,
+    PostLikeView,
     PostListCreateView,
     PostRestoreView,
 )
@@ -38,6 +43,11 @@ urlpatterns = [
     path("api/posts/<int:pk>", PostDetailView.as_view()),
     path("api/posts/<int:pk>/hide", PostHideView.as_view()),
     path("api/posts/<int:pk>/restore", PostRestoreView.as_view()),
+    path("api/posts/<int:pk>/comments", PostCommentListCreateView.as_view()),
+    path("api/posts/<int:pk>/like", PostLikeView.as_view()),
+    path("api/comments/<int:pk>", CommentDetailView.as_view()),
+    path("api/comments/<int:pk>/hide", CommentHideView.as_view()),
+    path("api/comments/<int:pk>/restore", CommentRestoreView.as_view()),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path("api/<path:path>", _UnregisteredApiRoute.as_view()),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

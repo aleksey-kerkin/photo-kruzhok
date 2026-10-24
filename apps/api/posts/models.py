@@ -50,3 +50,44 @@ class Post(models.Model):
                 self.slug,
             ],
         )
+
+
+class Comment(models.Model):
+    class Status(models.TextChoices):
+        VISIBLE = "visible", "Visible"
+        HIDDEN = "hidden", "Hidden"
+
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="comments"
+    )
+    text = models.CharField(max_length=1000)
+    parent = models.ForeignKey(
+        "self",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="replies",
+    )
+    status = models.CharField(
+        max_length=16,
+        choices=Status.choices,
+        default=Status.VISIBLE,
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["created_at", "id"]
+
+
+class Like(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="likes"
+    )
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="likes")
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["user", "post"], name="unique_like_per_user_post"),
+        ]
