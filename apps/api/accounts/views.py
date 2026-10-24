@@ -111,7 +111,9 @@ class RegisterView(APIView):
             fields["password"] = [str(item) for item in getattr(exc, "messages", [exc])]
         if fields:
             raise ValidationError(fields)
-        user = User.objects.create_user(username=username, email=email, password=password)
+        user = User.objects.create_user(
+            username=username, email=email, password=password
+        )
         Profile.objects.create(user=user)
         response = Response({"access": issue_access_token(user)}, status=201)
         _set_refresh_cookie(response, _issue_refresh(user))

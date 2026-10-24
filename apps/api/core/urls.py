@@ -2,16 +2,17 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
-from core.health import HealthView
 from drf_spectacular.renderers import OpenApiJsonRenderer2
 from drf_spectacular.views import SpectacularAPIView
 from rest_framework.exceptions import NotFound
+from rest_framework.views import APIView
+
+from core.health import HealthView
 
 SpectacularAPIView.renderer_classes = [
     OpenApiJsonRenderer2,
     *SpectacularAPIView.renderer_classes,
 ]
-from rest_framework.views import APIView
 
 
 class _UnregisteredApiRoute(APIView):

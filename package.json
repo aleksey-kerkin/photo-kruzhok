@@ -11,6 +11,10 @@
     "build": "turbo build"
   },
   "devDependencies": {
+    "@commitlint/cli": "21.2.4",
+    "@commitlint/config-conventional": "21.2.4",
+    "eslint": "10.13.0",
+    "prettier": "3.9.10",
     "turbo": "2.11.10"
   }
 }

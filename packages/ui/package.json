@@ -2,7 +2,7 @@
   "name": "@photo-kruzhok/ui",
   "private": true,
   "scripts": {
-    "lint": "node -e \"process.exit(0)\"",
+    "lint": "eslint smoke.test.js",
     "test": "node --test smoke.test.js",
     "build": "node -e \"process.exit(0)\""
   }
