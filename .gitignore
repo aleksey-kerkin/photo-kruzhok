@@ -164,6 +164,7 @@ cython_debug/
 node_modules/
 .turbo/
 *.tsbuildinfo
+.lighthouseci/
 
 # Uploaded media
 media/
