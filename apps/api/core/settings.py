@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "feed",
     "rest_framework",
     "drf_spectacular",
+    "accounts",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
