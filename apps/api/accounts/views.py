@@ -65,6 +65,24 @@ class LoginView(APIView):
         return response
 
 
+class RefreshView(APIView):
+    authentication_classes = [_LoginAuthentication]
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        raw = request.COOKIES.get("pk_refresh")
+        if not raw:
+            raise AuthenticationFailed()
+        refresh = RefreshToken.objects.filter(token_hash=hash_token(raw)).first()
+        if refresh is None or refresh.expires_at <= timezone.now():
+            raise AuthenticationFailed()
+        user = refresh.user
+        refresh.delete()
+        response = Response({"access": issue_access_token(user)})
+        _set_refresh_cookie(response, _issue_refresh(user))
+        return response
+
+
 class RegisterView(APIView):
     authentication_classes = []
     permission_classes = [AllowAny]
