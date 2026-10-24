@@ -24,7 +24,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: 3.12.15
-      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libvips-dev
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libheif-dev libvips-dev
       - run: pip install -r apps/api/requirements-dev.txt
       - run: ruff check apps/api
       - run: pytest
@@ -32,8 +32,6 @@ jobs:
         env:
           SECRET_KEY: test-secret-key
           USE_SQLITE: "1"
-          DEMO_MEMBER_PASSWORD: test-member-password
-          DEMO_LEADER_PASSWORD: test-leader-password
   js:
     runs-on: ubuntu-latest
     steps:
@@ -61,7 +59,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: 3.12.15
-      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libvips-dev
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libheif-dev libvips-dev
       - run: pip install -r apps/api/requirements.txt
       - run: pnpm install --frozen-lockfile
       - run: docker compose up -d --wait

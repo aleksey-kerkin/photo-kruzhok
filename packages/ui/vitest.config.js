@@ -10,7 +10,7 @@ export default defineConfig({
     include: ["**/*.test.jsx"],
     coverage: {
       ...vitestCoverage,
-      include: ["src/Button.jsx", "src/Field.jsx"],
+      include: ["src/Button.jsx", "src/Field.jsx", "src/Dialog.jsx"],
     },
   },
 });

@@ -19,6 +19,8 @@ describe("useApiClient", () => {
     await client.request("/api/challenges/current");
 
     expect(fetchImpl).toHaveBeenCalled();
+    const [, init] = fetchImpl.mock.calls[0];
+    expect(init.headers.get("Authorization")).toBe("Bearer token-123");
     vi.unstubAllGlobals();
   });
 });
