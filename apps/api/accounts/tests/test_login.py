@@ -29,6 +29,17 @@ def test_login_accepts_email(member):
 
 
 @pytest.mark.django_db
+def test_login_accepts_email_case_insensitive(member):
+    response = APIClient().post(
+        "/api/auth/login",
+        {"username": "ANYA@EXAMPLE.COM", "password": "correct-horse-battery"},
+        format="json",
+    )
+    assert response.status_code == 200
+    assert response.json()["access"]
+
+
+@pytest.mark.django_db
 def test_login_rejects_a_bad_password(member):
     response = APIClient().post(
         "/api/auth/login",

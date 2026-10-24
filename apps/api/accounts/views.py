@@ -55,7 +55,7 @@ class LoginView(APIView):
         value = (request.data.get("username") or "").strip()
         password = request.data.get("password") or ""
         if "@" in value:
-            user = User.objects.filter(email=value).first()
+            user = User.objects.filter(email=value.lower()).first()
         else:
             user = User.objects.filter(username=value).first()
         if user is None or not user.check_password(password):
