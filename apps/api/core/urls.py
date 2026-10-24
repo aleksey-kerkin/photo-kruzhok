@@ -7,6 +7,17 @@ from drf_spectacular.views import SpectacularAPIView
 from rest_framework.exceptions import NotFound
 from rest_framework.views import APIView
 
+from accounts.profile_api import ProfileDetailView, ProfileMeView, ProfilePostsView
+from challenges.api import (
+    ChallengeCloseView,
+    ChallengeCurrentView,
+    ChallengeDetailView,
+    ChallengeListCreateView,
+    ChallengeStatsView,
+    ChallengeSubmissionListCreateView,
+    ChallengeSubmissionWithdrawView,
+    ChallengeVoteView,
+)
 from core.health import HealthView
 from posts.api import (
     CommentDetailView,
@@ -48,6 +59,23 @@ urlpatterns = [
     path("api/comments/<int:pk>", CommentDetailView.as_view()),
     path("api/comments/<int:pk>/hide", CommentHideView.as_view()),
     path("api/comments/<int:pk>/restore", CommentRestoreView.as_view()),
+    path("api/profiles/me", ProfileMeView.as_view()),
+    path("api/profiles/<str:username>/posts", ProfilePostsView.as_view()),
+    path("api/profiles/<str:username>", ProfileDetailView.as_view()),
+    path("api/challenges/current", ChallengeCurrentView.as_view()),
+    path("api/challenges", ChallengeListCreateView.as_view()),
+    path("api/challenges/<int:pk>", ChallengeDetailView.as_view()),
+    path("api/challenges/<int:pk>/close", ChallengeCloseView.as_view()),
+    path(
+        "api/challenges/<int:pk>/submissions",
+        ChallengeSubmissionListCreateView.as_view(),
+    ),
+    path(
+        "api/challenges/<int:pk>/submissions/<int:submission_id>",
+        ChallengeSubmissionWithdrawView.as_view(),
+    ),
+    path("api/challenges/<int:pk>/votes", ChallengeVoteView.as_view()),
+    path("api/challenges/<int:pk>/stats", ChallengeStatsView.as_view()),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path("api/<path:path>", _UnregisteredApiRoute.as_view()),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

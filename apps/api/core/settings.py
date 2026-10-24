@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     "posts",
+    "challenges",
     "feed",
     "rest_framework",
     "drf_spectacular",
