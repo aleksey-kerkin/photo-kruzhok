@@ -16,6 +16,12 @@ const profiles = await Promise.all(
     };
   }),
 );
+
+const showcaseItems = [
+  { alt: "Пример кадра 1" },
+  { alt: "Пример кадра 2" },
+  { alt: "Пример кадра 3" },
+];
 ---
 
 <BaseLayout title="Фото-кружок">
@@ -28,7 +34,23 @@ const profiles = await Promise.all(
 
   <section>
     <h2>Витрина</h2>
-    <p>Витрина появится здесь, когда API подключён к сборке.</p>
+    <ul class="landing-showcase">
+      {
+        showcaseItems.map((item, index) => (
+          <li>
+            <img
+              src="/showcase.svg"
+              alt={item.alt}
+              width="320"
+              height="240"
+              {...(index === 0
+                ? { fetchpriority: "high" }
+                : { loading: "lazy" })}
+            />
+          </li>
+        ))
+      }
+    </ul>
   </section>
 
   <section>

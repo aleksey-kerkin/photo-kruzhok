@@ -18,6 +18,20 @@
   color: var(--pk-color-accent);
 }
 
+.landing-showcase {
+  display: grid;
+  gap: 1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.landing-showcase img {
+  display: block;
+  height: auto;
+  max-width: 100%;
+}
+
 .landing-profiles {
   display: flex;
   flex-wrap: wrap;
