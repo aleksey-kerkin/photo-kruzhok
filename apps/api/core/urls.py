@@ -8,6 +8,12 @@ from rest_framework.exceptions import NotFound
 from rest_framework.views import APIView
 
 from core.health import HealthView
+from posts.api import (
+    PostDetailView,
+    PostHideView,
+    PostListCreateView,
+    PostRestoreView,
+)
 
 SpectacularAPIView.renderer_classes = [
     OpenApiJsonRenderer2,
@@ -28,6 +34,10 @@ urlpatterns = [
     # API routes must be registered before this catch-all.
     path("api/health", HealthView.as_view()),
     path("api/auth/", include("accounts.urls")),
+    path("api/posts", PostListCreateView.as_view()),
+    path("api/posts/<int:pk>", PostDetailView.as_view()),
+    path("api/posts/<int:pk>/hide", PostHideView.as_view()),
+    path("api/posts/<int:pk>/restore", PostRestoreView.as_view()),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path("api/<path:path>", _UnregisteredApiRoute.as_view()),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
