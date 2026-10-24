@@ -1,0 +1,16 @@
+$pk-colors: (
+  bg: oklch(0.9679 0.005 78.3),
+  surface: oklch(1 0 0),
+  text: oklch(0.2178 0 0),
+  accent: oklch(0.4698 0.143 37.3),
+);
+
+:root {
+  @each $name, $value in $pk-colors {
+    --pk-color-#{$name}: #{$value};
+  }
+
+  --pk-color-accent-hover: oklch(from var(--pk-color-accent) calc(l + 0.06) c h);
+  --pk-color-text-muted: oklch(from var(--pk-color-text) 0.4628 c h);
+  --pk-color-border: oklch(from var(--pk-color-text) 0.6 c h);
+}
