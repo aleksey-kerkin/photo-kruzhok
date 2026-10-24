@@ -188,6 +188,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@photo-kruzhok/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       '@tanstack/react-query':
         specifier: 5.104.5
         version: 5.104.5(@types/react@19.3.0)(react@19.3.1)

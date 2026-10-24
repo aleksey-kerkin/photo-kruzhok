@@ -15,5 +15,8 @@ describe("App router", () => {
     expect(
       await screen.findByRole("heading", { name: "Вход" }),
     ).toBeTruthy();
+
+    const submit = screen.getByRole("button", { name: "Войти" });
+    expect(submit.classList.contains("pk-button")).toBe(true);
   });
 });
