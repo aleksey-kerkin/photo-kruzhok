@@ -1,9 +1,23 @@
 {
   "name": "@photo-kruzhok/web",
   "private": true,
+  "type": "module",
   "scripts": {
-    "lint": "eslint smoke.test.js",
-    "test": "node --test smoke.test.js",
-    "build": "node -e \"process.exit(0)\""
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint src",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-router-dom": "7.18.4"
+  },
+  "devDependencies": {
+    "@testing-library/react": "16.3.3",
+    "@vitejs/plugin-react": "6.1.2",
+    "jsdom": "30.1.3",
+    "vite": "8.3.5",
+    "vitest": "5.0.5"
   }
 }

@@ -1,6 +1,6 @@
 export default [
   {
-    files: ["apps/**/*.js", "packages/**/*.js"],
+    files: ["apps/**/*.{js,jsx}", "packages/**/*.js"],
     rules: {},
   },
 ];
