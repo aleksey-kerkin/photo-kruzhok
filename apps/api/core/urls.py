@@ -19,5 +19,6 @@ urlpatterns = [
     path("", include(("feed.urls", "feed"), namespace="feed")),
     # API routes must be registered before this catch-all.
     path("api/health", HealthView.as_view()),
+    path("api/auth/", include("accounts.urls")),
     path("api/<path:path>", _UnregisteredApiRoute.as_view()),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
