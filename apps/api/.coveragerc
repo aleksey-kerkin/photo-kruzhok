@@ -1,0 +1,14 @@
+[run]
+source = .
+omit =
+    */migrations/*
+    */tests/*
+    conftest.py
+    manage.py
+    core/asgi.py
+    core/wsgi.py
+    core/settings.py
+
+[report]
+exclude_lines =
+    pragma: no cover

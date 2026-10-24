@@ -1,11 +1,20 @@
 import io
 from pathlib import Path
 
+import pyvips
 import pytest
 from django.core.files.uploadedfile import SimpleUploadedFile
 from PIL import Image
 
 from posts.images import build_derivatives
+
+
+def _has_heif_encoder():
+    try:
+        pyvips.Operation.new_from_name("heifsave_buffer")
+        return True
+    except pyvips.error.Error:
+        return False
 
 FIXTURE_DIR = Path(__file__).resolve().parent / "fixtures"
 FIXTURE_PATH = FIXTURE_DIR / "sample.jpg"
@@ -34,6 +43,7 @@ def test_build_derivatives_strips_gps_and_hashes_stably(sample_jpeg_bytes):
     assert len(first["content_hash"]) == 64
 
 
+@pytest.mark.skipif(not _has_heif_encoder(), reason="libvips HEIF encoder is required")
 def test_build_derivatives_includes_all_widths_for_wide_image():
     buf = io.BytesIO()
     Image.new("RGB", (2000, 1000), color=(10, 20, 30)).save(buf, format="JPEG")
@@ -41,3 +51,4 @@ def test_build_derivatives_includes_all_widths_for_wide_image():
 
     assert set(result["files"]["webp"].keys()) == {480, 960, 1600}
     assert set(result["files"]["avif"].keys()) == {480, 960, 1600}
+

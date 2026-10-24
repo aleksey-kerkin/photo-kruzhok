@@ -5,7 +5,9 @@ from django.contrib.auth import get_user_model
 from django.test import RequestFactory
 from django.utils import timezone
 
-from core.pagination import CursorPagination
+import pytest
+
+from core.pagination import CursorPagination, _decode_cursor
 from posts.models import Post
 
 
@@ -45,3 +47,22 @@ def test_cursor_pagination_returns_remaining_row_on_second_page():
 
     assert second_page["has_next"] is False
     assert [item.id for item in second_page["results"]] == [ordered[2].id]
+
+
+def test_cursor_pagination_normalizes_invalid_limits():
+    paginator = CursorPagination()
+    factory = RequestFactory()
+
+    invalid_request = factory.get("/", {"limit": "bad"})
+    assert paginator._get_limit(invalid_request) == paginator.default_limit
+
+    zero_request = factory.get("/", {"limit": "0"})
+    assert paginator._get_limit(zero_request) == paginator.default_limit
+
+    huge_request = factory.get("/", {"limit": "500"})
+    assert paginator._get_limit(huge_request) == paginator.max_limit
+
+
+def test_decode_cursor_rejects_invalid_payload():
+    with pytest.raises(ValueError, match="invalid cursor"):
+        _decode_cursor("not-a-valid-cursor")

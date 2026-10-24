@@ -6,7 +6,8 @@
     "dev": "astro dev --port 4321",
     "lint": "eslint smoke.test.js astro.config.mjs src",
     "test": "pnpm run build && node --test smoke.test.js",
-    "build": "astro build && cp dist/client/index.html dist/index.html"
+    "build": "astro build && cp dist/client/index.html dist/index.html",
+    "preview": "astro preview --port 4321"
   },
   "dependencies": {
     "@astrojs/node": "11.1.9",

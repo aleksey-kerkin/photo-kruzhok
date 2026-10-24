@@ -32,6 +32,8 @@ jobs:
         env:
           SECRET_KEY: test-secret-key
           USE_SQLITE: "1"
+          DEMO_MEMBER_PASSWORD: test-member-password
+          DEMO_LEADER_PASSWORD: test-leader-password
   js:
     runs-on: ubuntu-latest
     steps:
@@ -45,6 +47,31 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm test
+  playwright:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 12.15.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.23.4
+          cache: pnpm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.12.15
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libvips-dev
+      - run: pip install -r apps/api/requirements.txt
+      - run: pnpm install --frozen-lockfile
+      - run: docker compose up -d --wait
+      - run: sh scripts/e2e-seed.sh
+      - run: sh scripts/e2e-build.sh
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm exec playwright test
+        env:
+          DEMO_MEMBER_PASSWORD: ${{ secrets.DEMO_MEMBER_PASSWORD }}
+          DEMO_LEADER_PASSWORD: ${{ secrets.DEMO_LEADER_PASSWORD }}
   lighthouse-landing:
     runs-on: ubuntu-latest
     steps:

@@ -74,6 +74,20 @@ def test_member_creates_post_with_image(api_client, member, sample_jpeg_bytes):
 
 
 @pytest.mark.django_db
+def test_create_post_rejects_caption_over_2000_chars(api_client, member, sample_jpeg_bytes):
+    response = api_client.post(
+        "/api/posts",
+        {"caption": "x" * 2001, "image": _upload(sample_jpeg_bytes)},
+        **_auth(member),
+        format="multipart",
+    )
+
+    assert response.status_code == 400
+    assert response.json()["code"] == "validation_error"
+    assert "caption" in response.json()["fields"]
+
+
+@pytest.mark.django_db
 def test_member_patches_caption_only(api_client, member, sample_jpeg_bytes):
     create = api_client.post(
         "/api/posts",
