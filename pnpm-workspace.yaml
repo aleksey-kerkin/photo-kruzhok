@@ -3,3 +3,7 @@ packages:
   - "apps/landing"
   - "apps/admin"
   - "packages/*"
+
+allowBuilds:
+  esbuild: true
+  "@parcel/watcher": true
