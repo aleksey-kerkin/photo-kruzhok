@@ -8,6 +8,7 @@ from rest_framework.authentication import BaseAuthentication
 from rest_framework.exceptions import AuthenticationFailed, ValidationError
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.throttling import ScopedRateThrottle
 from rest_framework.views import APIView
 
 from accounts.access import issue_access_token
@@ -50,6 +51,8 @@ def _issue_refresh(user):
 class LoginView(APIView):
     authentication_classes = [_LoginAuthentication]
     permission_classes = [AllowAny]
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = "auth"
 
     def post(self, request):
         value = (request.data.get("username") or "").strip()
@@ -86,6 +89,8 @@ class RefreshView(APIView):
 class RegisterView(APIView):
     authentication_classes = []
     permission_classes = [AllowAny]
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = "auth"
 
     def post(self, request):
         username = (request.data.get("username") or "").strip()

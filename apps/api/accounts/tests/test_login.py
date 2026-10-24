@@ -1,9 +1,11 @@
 import pytest
+from django.core.cache import cache
 from rest_framework.test import APIClient
 
 
 @pytest.mark.django_db
 def test_login_accepts_email(member):
+    cache.clear()
     response = APIClient().post(
         "/api/auth/login",
         {"username": "anya@example.com", "password": "correct-horse-battery"},
@@ -16,6 +18,7 @@ def test_login_accepts_email(member):
 
 @pytest.mark.django_db
 def test_login_accepts_email_case_insensitive(member):
+    cache.clear()
     response = APIClient().post(
         "/api/auth/login",
         {"username": "ANYA@EXAMPLE.COM", "password": "correct-horse-battery"},
@@ -27,6 +30,7 @@ def test_login_accepts_email_case_insensitive(member):
 
 @pytest.mark.django_db
 def test_login_rejects_a_bad_password(member):
+    cache.clear()
     response = APIClient().post(
         "/api/auth/login",
         {"username": "anya01", "password": "wrong-password-here"},
