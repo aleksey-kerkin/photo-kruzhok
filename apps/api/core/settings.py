@@ -175,4 +175,10 @@ REST_FRAMEWORK = {
         "accounts.authentication.AccessTokenAuthentication",
     ],
     "EXCEPTION_HANDLER": "core.exceptions.api_exception_handler",
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Photo circle API",
+    "VERSION": "0.1.0",
 }
