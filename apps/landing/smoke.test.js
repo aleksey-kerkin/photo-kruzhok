@@ -11,4 +11,8 @@ test("built home page contains Витрина and anya profile link", () => {
   const html = readFileSync(new URL("./dist/index.html", import.meta.url), "utf8");
   assert.match(html, /Витрина/);
   assert.match(html, /\/profiles\/anya/);
+  assert.doesNotMatch(html, /showcase\.svg/);
+  assert.match(html, /\/photos\/01\.jpg/);
+  assert.match(html, /\/photos\/02\.jpg/);
+  assert.match(html, /\/photos\/03\.jpg/);
 });

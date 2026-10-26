@@ -18,9 +18,9 @@ const profiles = await Promise.all(
 );
 
 const showcaseItems = [
-  { alt: "Пример кадра 1" },
-  { alt: "Пример кадра 2" },
-  { alt: "Пример кадра 3" },
+  { src: "/photos/01.jpg", alt: "Кадр витрины 1" },
+  { src: "/photos/02.jpg", alt: "Кадр витрины 2" },
+  { src: "/photos/03.jpg", alt: "Кадр витрины 3" },
 ];
 ---
 
@@ -39,10 +39,10 @@ const showcaseItems = [
         showcaseItems.map((item, index) => (
           <li>
             <img
-              src="/showcase.svg"
+              src={item.src}
               alt={item.alt}
-              width="320"
-              height="240"
+              width="480"
+              height="320"
               {...(index === 0
                 ? { fetchpriority: "high" }
                 : { loading: "lazy" })}
