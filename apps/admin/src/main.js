@@ -3,6 +3,7 @@ import { createApp } from "vue";
 
 import App from "./App.vue";
 import { router } from "./router.js";
+import "@photo-kruzhok/ui/ui.css";
 
 const queryClient = new QueryClient();
 

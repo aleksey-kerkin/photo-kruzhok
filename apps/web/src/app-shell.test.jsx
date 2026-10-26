@@ -14,4 +14,15 @@ describe("AppShell", () => {
 
     expect(screen.getByRole("navigation", { name: "Основная навигация" })).toBeTruthy();
   });
+
+  it("uses the shared shell and nav classes", () => {
+    const { container } = render(
+      <MemoryRouter>
+        <AppShell />
+      </MemoryRouter>,
+    );
+
+    expect(container.querySelector(".pk-shell")).not.toBeNull();
+    expect(container.querySelector(".pk-shell__nav")).not.toBeNull();
+  });
 });

@@ -190,6 +190,9 @@ importers:
       '@photo-kruzhok/sdk':
         specifier: workspace:*
         version: link:../../packages/sdk
+      '@photo-kruzhok/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       '@tanstack/vue-query':
         specifier: 5.104.5
         version: 5.104.5(vue@3.5.44(typescript@5.9.3))

@@ -1,0 +1,28 @@
+body {
+  margin: 0;
+  background: var(--pk-color-bg);
+  color: var(--pk-color-text);
+  font-family: system-ui, sans-serif;
+}
+
+a {
+  color: var(--pk-color-accent);
+}
+
+.pk-shell {
+  box-sizing: border-box;
+  margin: 0 auto;
+  max-width: 72ch;
+  min-height: 100vh;
+  padding: 1rem;
+
+  @media (min-width: 48rem) {
+    padding: 1.5rem;
+  }
+}
+
+.pk-shell__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+}
