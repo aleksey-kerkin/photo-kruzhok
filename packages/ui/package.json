@@ -3,8 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "lint": "eslint smoke.test.js src/tokens.test.js vitest.config.js",
-    "test": "node --test smoke.test.js src/tokens.test.js && vitest run --coverage",
+    "lint": "eslint smoke.test.js src/tokens.test.js src/grid.test.js vitest.config.js",
+    "test": "node --test smoke.test.js src/tokens.test.js src/grid.test.js && vitest run --coverage",
     "build": "sass src/index.scss dist/ui.css --style=compressed",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build -o dist/storybook"
