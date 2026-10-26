@@ -14,3 +14,12 @@ $pk-colors: (
   --pk-color-text-muted: oklch(from var(--pk-color-text) 0.4628 c h);
   --pk-color-border: oklch(from var(--pk-color-text) 0.6 c h);
 }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --pk-color-bg: oklch(0.18 0.005 78.3);
+    --pk-color-surface: oklch(0.23 0.005 78.3);
+    --pk-color-text: oklch(0.93 0 0);
+    --pk-color-accent: oklch(0.72 0.12 37.3);
+  }
+}
