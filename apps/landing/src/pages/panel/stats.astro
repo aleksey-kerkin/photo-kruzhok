@@ -1,0 +1,11 @@
+---
+export const prerender = false;
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PanelStats from "../../islands/PanelStats.vue";
+---
+
+<BaseLayout title="Статистика">
+  <div class="pk-column">
+    <PanelStats client:load />
+  </div>
+</BaseLayout>

@@ -1,0 +1,11 @@
+---
+export const prerender = false;
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PanelModeration from "../../islands/PanelModeration.vue";
+---
+
+<BaseLayout title="Модерация">
+  <div class="pk-column">
+    <PanelModeration client:load />
+  </div>
+</BaseLayout>

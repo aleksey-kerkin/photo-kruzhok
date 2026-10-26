@@ -1,0 +1,11 @@
+---
+export const prerender = false;
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PanelChallenge from "../../islands/PanelChallenge.vue";
+---
+
+<BaseLayout title="Тема">
+  <div class="pk-column">
+    <PanelChallenge client:load />
+  </div>
+</BaseLayout>
