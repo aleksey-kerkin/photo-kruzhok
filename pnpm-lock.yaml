@@ -287,6 +287,10 @@ importers:
         version: 7.13.0(typescript@5.9.3)
 
   packages/ui:
+    dependencies:
+      '@fancyapps/ui':
+        specifier: 6.1.15
+        version: 6.1.15
     devDependencies:
       '@storybook/addon-docs':
         specifier: 10.6.3
@@ -948,6 +952,9 @@ packages:
     peerDependenciesMeta:
       '@noble/hashes':
         optional: true
+
+  '@fancyapps/ui@6.1.15':
+    resolution: {integrity: sha512-J1w/ZLhkXzMSHZ7Bg1iX7GFA/YkH/Ka+r2HIX4pchwu6PNalfyzzgxghhP92CWlbH4ssV8qYPJ/KQcdRW5TVVw==}
 
   '@humanfs/core@0.19.2':
     resolution: {integrity: sha512-UhXNm+CFMWcbChXywFwkmhqjs3PRCmcSa/hfBgLIb7oQ5HNb1wS0icWsGtSAUNgefHeI+eBrA8I1fxmbHsGdvA==}
@@ -4567,6 +4574,8 @@ snapshots:
       levn: 0.4.1
 
   '@exodus/bytes@1.16.0': {}
+
+  '@fancyapps/ui@6.1.15': {}
 
   '@humanfs/core@0.19.2':
     dependencies:
