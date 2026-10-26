@@ -45,26 +45,27 @@ async function onSubmit(event) {
 
 <template>
   <form @submit="onSubmit">
-    <label>
+    <label class="pk-field">
       Имя
-      <input v-model="username" name="username" type="text" autocomplete="username" />
-      <span v-if="fieldErrors.username">{{ fieldErrors.username }}</span>
+      <input class="pk-field__control" v-model="username" name="username" type="text" autocomplete="username" />
+      <span class="pk-field__error" v-if="fieldErrors.username">{{ fieldErrors.username }}</span>
     </label>
-    <label v-if="mode === 'register'">
+    <label class="pk-field" v-if="mode === 'register'">
       Почта
-      <input v-model="email" name="email" type="email" autocomplete="email" />
-      <span v-if="fieldErrors.email">{{ fieldErrors.email }}</span>
+      <input class="pk-field__control" v-model="email" name="email" type="email" autocomplete="email" />
+      <span class="pk-field__error" v-if="fieldErrors.email">{{ fieldErrors.email }}</span>
     </label>
-    <label>
+    <label class="pk-field">
       Пароль
       <input
+        class="pk-field__control"
         v-model="password"
         name="password"
         type="password"
         :autocomplete="mode === 'login' ? 'current-password' : 'new-password'"
       />
-      <span v-if="fieldErrors.password">{{ fieldErrors.password }}</span>
+      <span class="pk-field__error" v-if="fieldErrors.password">{{ fieldErrors.password }}</span>
     </label>
-    <button type="submit">{{ submitLabel }}</button>
+    <button class="pk-button pk-button--primary" type="submit">{{ submitLabel }}</button>
   </form>
 </template>

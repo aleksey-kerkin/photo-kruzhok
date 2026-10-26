@@ -70,7 +70,7 @@ jobs:
         env:
           DEMO_MEMBER_PASSWORD: ${{ secrets.DEMO_MEMBER_PASSWORD }}
           DEMO_LEADER_PASSWORD: ${{ secrets.DEMO_LEADER_PASSWORD }}
-  lighthouse-landing:
+  lighthouse:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

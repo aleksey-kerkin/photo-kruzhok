@@ -221,15 +221,9 @@ importers:
         specifier: 6.1.15
         version: 6.1.15
     devDependencies:
-      astro:
-        specifier: 7.4.1
-        version: 7.4.1(esbuild@0.28.2)(jiti@2.7.0)(sass@1.106.1)(yaml@2.9.1)
       sass:
         specifier: 1.106.1
         version: 1.106.1
-      vue:
-        specifier: 3.5.44
-        version: 3.5.44(typescript@5.9.3)
 
 packages:
 

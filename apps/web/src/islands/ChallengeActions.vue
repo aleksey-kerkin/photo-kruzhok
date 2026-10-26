@@ -68,18 +68,18 @@ async function onVote(event) {
     <template v-else>
       <h2 v-if="challenge">{{ challenge.title }}</h2>
       <form @submit="onSubmitPost">
-        <label>
+        <label class="pk-field">
           Номер поста
-          <input v-model="postId" name="post_id" type="number" />
+          <input class="pk-field__control" v-model="postId" name="post_id" type="number" />
         </label>
-        <button type="submit">Отправить</button>
+        <button class="pk-button pk-button--primary" type="submit">Отправить</button>
       </form>
       <form @submit="onVote">
-        <label>
+        <label class="pk-field">
           Номер заявки
-          <input v-model="submissionId" name="submission_id" type="number" />
+          <input class="pk-field__control" v-model="submissionId" name="submission_id" type="number" />
         </label>
-        <button type="submit">Голосовать</button>
+        <button class="pk-button pk-button--primary" type="submit">Голосовать</button>
       </form>
     </template>
   </div>

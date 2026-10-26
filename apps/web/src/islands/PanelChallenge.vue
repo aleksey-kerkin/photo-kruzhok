@@ -109,7 +109,7 @@ async function vote(submissionId) {
         <ul v-else-if="submissions.length">
           <li v-for="submission in submissions" :key="submission.id">
             <span>{{ submissionCaption(submission) }}</span>
-            <button type="button" :disabled="votePending" @click="vote(submission.id)">
+            <button class="pk-button" type="button" :disabled="votePending" @click="vote(submission.id)">
               Проголосовать
             </button>
           </li>

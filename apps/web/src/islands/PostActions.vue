@@ -70,15 +70,15 @@ async function onCommentSubmit(event) {
     </template>
     <template v-else>
       <p>
-        <button type="button" @click="toggleLike">Лайк</button>
+        <button class="pk-button" type="button" @click="toggleLike">Лайк</button>
         {{ likesCount }}
       </p>
       <form @submit="onCommentSubmit">
-        <label>
+        <label class="pk-field">
           Комментарий
-          <input v-model="commentText" name="text" type="text" />
+          <input class="pk-field__control" v-model="commentText" name="text" type="text" />
         </label>
-        <button type="submit">Отправить</button>
+        <button class="pk-button pk-button--primary" type="submit">Отправить</button>
       </form>
     </template>
   </div>

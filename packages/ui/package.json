@@ -3,8 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "lint": "eslint smoke.test.js src/tokens.test.js src/grid.test.js src/openPhoto.test.js src/vue-wrappers.test.js",
-    "test": "node --test smoke.test.js src/vue-wrappers.test.js src/tokens.test.js src/grid.test.js src/openPhoto.test.js",
+    "lint": "eslint smoke.test.js src/tokens.test.js src/grid.test.js src/openPhoto.test.js src/button.test.js",
+    "test": "node --test smoke.test.js src/button.test.js src/tokens.test.js src/grid.test.js src/openPhoto.test.js",
     "build": "sass src/index.scss dist/ui.css --style=compressed"
   },
   "exports": {
@@ -12,14 +12,9 @@
     "./openPhoto.js": "./src/openPhoto.js"
   },
   "devDependencies": {
-    "astro": "7.4.1",
-    "sass": "1.106.1",
-    "vue": "3.5.44"
+    "sass": "1.106.1"
   },
   "dependencies": {
     "@fancyapps/ui": "6.1.15"
-  },
-  "peerDependencies": {
-    "vue": "3.5.44"
   }
 }

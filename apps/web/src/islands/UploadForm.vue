@@ -49,15 +49,15 @@ async function onSubmit(event) {
       <p><a href="/login">Войти, чтобы загрузить снимок</a></p>
     </template>
     <form v-else @submit="onSubmit">
-      <label>
+      <label class="pk-field">
         Снимок
-        <input name="image" type="file" accept="image/*" />
+        <input class="pk-field__control" name="image" type="file" accept="image/*" />
       </label>
-      <label>
+      <label class="pk-field">
         Подпись
-        <input v-model="caption" name="caption" type="text" />
+        <input class="pk-field__control" v-model="caption" name="caption" type="text" />
       </label>
-      <button type="submit">Опубликовать</button>
+      <button class="pk-button pk-button--primary" type="submit">Опубликовать</button>
     </form>
   </div>
 </template>

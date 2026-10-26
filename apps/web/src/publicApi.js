@@ -1,7 +1,7 @@
 import { createClient } from "@photo-kruzhok/sdk";
 
 function apiOrigin() {
-  return import.meta.env.LANDING_API_ORIGIN ?? "http://127.0.0.1:8000";
+  return import.meta.env.PUBLIC_API_ORIGIN ?? "http://127.0.0.1:8000";
 }
 
 export function createPublicClient() {

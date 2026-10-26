@@ -12,6 +12,6 @@ case "$(node -v)" in
     ;;
 esac
 
-export LANDING_API_ORIGIN="${LANDING_API_ORIGIN:-http://127.0.0.1:8000}"
+export PUBLIC_API_ORIGIN="${PUBLIC_API_ORIGIN:-http://127.0.0.1:8000}"
 
 pnpm --filter @photo-kruzhok/web build

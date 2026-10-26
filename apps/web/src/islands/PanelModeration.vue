@@ -72,7 +72,7 @@ async function restorePost(postId) {
       <ul v-else-if="posts.length">
         <li v-for="post in posts" :key="post.id">
           <span>{{ post.caption || `Пост ${post.id}` }}</span>
-          <button type="button" :disabled="restorePending" @click="restorePost(post.id)">
+          <button class="pk-button" type="button" :disabled="restorePending" @click="restorePost(post.id)">
             Восстановить
           </button>
         </li>

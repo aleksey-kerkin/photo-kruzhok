@@ -15,8 +15,8 @@
   text-decoration: none;
 
   &:focus-visible {
-    outline: 2px solid var(--pk-color-accent);
-    outline-offset: 2px;
+    outline: 0.125rem solid var(--pk-color-accent);
+    outline-offset: 0.125rem;
   }
 
   &:disabled {
@@ -37,11 +37,5 @@
       background: var(--pk-color-accent-hover);
       border-color: var(--pk-color-accent-hover);
     }
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .pk-button {
-    transition: none;
   }
 }

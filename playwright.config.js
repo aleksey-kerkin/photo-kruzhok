@@ -13,17 +13,13 @@ export default defineConfig({
     trace: "on-first-retry",
   },
   projects: [
-    { name: "landing-home", testMatch: /landing-home\.spec\.js/, use: { baseURL: BASE } },
+    { name: "home", testMatch: /home\.spec\.js/, use: { baseURL: BASE } },
+    { name: "profile", testMatch: /profile\.spec\.js/, use: { baseURL: BASE } },
+    { name: "login", testMatch: /login\.spec\.js/, use: { baseURL: BASE } },
+    { name: "post", testMatch: /post\.spec\.js/, use: { baseURL: BASE } },
     {
-      name: "landing-profile",
-      testMatch: /landing-profile\.spec\.js/,
-      use: { baseURL: BASE },
-    },
-    { name: "web-login", testMatch: /web-login\.spec\.js/, use: { baseURL: BASE } },
-    { name: "web-post", testMatch: /web-post\.spec\.js/, use: { baseURL: BASE } },
-    {
-      name: "admin-challenge",
-      testMatch: /admin-challenge\.spec\.js/,
+      name: "panel-challenge",
+      testMatch: /panel-challenge\.spec\.js/,
       use: { baseURL: BASE },
     },
     { name: "auth-env", testMatch: /auth-env\.spec\.js/ },

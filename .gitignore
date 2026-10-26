@@ -165,6 +165,8 @@ node_modules/
 .turbo/
 *.tsbuildinfo
 .lighthouseci/
+test-results/
+playwright-report/
 
 # Uploaded media
 media/
