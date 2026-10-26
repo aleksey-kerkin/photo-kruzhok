@@ -3,7 +3,7 @@ export const prerender = false;
 
 import ProfilePage from "../../components/ProfilePage.astro";
 
-const username = Astro.params.username;
+const username = Astro.params.username?.trim() ?? "";
 Astro.response.headers.set("Cache-Control", "public, max-age=60, s-maxage=60");
 ---
 

@@ -1,0 +1,106 @@
+---
+export const prerender = false;
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { createPublicClient } from "../../publicApi.js";
+
+const id = Astro.params.id;
+const client = createPublicClient();
+
+function isErrorBody(body) {
+  return body != null && typeof body === "object" && "code" in body && "message" in body;
+}
+
+let post = null;
+try {
+  const body = await client.request(`/api/posts/${encodeURIComponent(id)}`);
+  post = isErrorBody(body) ? null : body;
+} catch {
+  post = null;
+}
+
+let comments = [];
+if (post) {
+  try {
+    const page = await client.request(
+      `/api/posts/${encodeURIComponent(id)}/comments`,
+    );
+    comments = Array.isArray(page?.results) ? page.results : [];
+  } catch {
+    comments = [];
+  }
+}
+
+const exifFields = [
+  { key: "camera", label: "Камера" },
+  { key: "lens", label: "Объектив" },
+  {
+    key: "focal_length_mm",
+    label: "Фокусное расстояние",
+    format: (value) => `${value} мм`,
+  },
+  { key: "aperture", label: "Диафрагма", format: (value) => `f/${value}` },
+  { key: "shutter_speed", label: "Выдержка" },
+  { key: "iso", label: "ISO", format: (value) => String(value) },
+  {
+    key: "taken_at",
+    label: "Дата съёмки",
+    format: (value) => {
+      const date = new Date(value);
+      return Number.isNaN(date.getTime()) ? String(value) : date.toLocaleString("ru-RU");
+    },
+  },
+];
+
+const exif = post?.exif ?? {};
+const exifRows = exifFields.filter(
+  ({ key }) => exif[key] != null && exif[key] !== "",
+);
+
+const pageTitle = post ? (post.caption ?? `Пост ${post.id}`) : "Пост не найден";
+Astro.response.headers.set("Cache-Control", "public, max-age=60, s-maxage=60");
+---
+
+<BaseLayout title={pageTitle}>
+  <p><a href="/">На главную</a></p>
+  <div class="pk-column">
+    {
+      post ? (
+        <>
+          {post.image ? (
+            <img
+              src={post.image}
+              alt={post.caption ?? ""}
+              width={post.width ?? undefined}
+              height={post.height ?? undefined}
+            />
+          ) : null}
+          {post.caption ? <p>{post.caption}</p> : null}
+          {exifRows.length > 0 ? (
+            <dl>
+              {exifRows.map(({ key, label, format }) => (
+                <div>
+                  <dt>{label}</dt>
+                  <dd>{format ? format(exif[key]) : exif[key]}</dd>
+                </div>
+              ))}
+            </dl>
+          ) : null}
+          {comments.length > 0 ? (
+            <ul>
+              {comments.map((comment) => (
+                <li>
+                  <p>
+                    <strong>{comment.author.username}</strong>: {comment.text}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </>
+      ) : (
+        <h1>Пост не найден</h1>
+      )
+    }
+  </div>
+</BaseLayout>

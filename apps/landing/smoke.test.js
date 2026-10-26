@@ -1,6 +1,14 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync, statSync } from "node:fs";
+import { join } from "node:path";
 import test from "node:test";
+
+function walk(dir) {
+  return readdirSync(dir).flatMap((name) => {
+    const path = join(dir, name);
+    return statSync(path).isDirectory() ? walk(path) : [path];
+  });
+}
 
 test("landing shell is present", () => {
   const pkg = JSON.parse(readFileSync(new URL("./package.json", import.meta.url), "utf8"));
@@ -13,4 +21,10 @@ test("built home page contains Витрина and anya profile link", () => {
   assert.match(html, /\/profiles\/anya/);
   assert.match(html, /pk-grid/);
   assert.doesNotMatch(html, /astro-island/);
+});
+
+test("the build contains a post route and a profile route", () => {
+  const files = walk(new URL("./dist", import.meta.url).pathname);
+  assert.ok(files.some((file) => file.includes("posts")));
+  assert.ok(files.some((file) => file.includes("profiles")));
 });

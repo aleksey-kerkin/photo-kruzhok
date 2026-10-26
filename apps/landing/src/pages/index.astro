@@ -39,3 +39,17 @@ try {
     }
   </ul>
 </BaseLayout>
+
+<script>
+  import { openPhoto } from "@photo-kruzhok/ui/openPhoto.js";
+
+  document.querySelectorAll(".pk-grid__item a").forEach((link) => {
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      const image = link.querySelector("img");
+      if (image?.src) {
+        openPhoto(image.src);
+      }
+    });
+  });
+</script>

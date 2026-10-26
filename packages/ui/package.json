@@ -13,7 +13,8 @@
     "./ui.css": "./dist/ui.css",
     "./Button": "./src/Button.jsx",
     "./Field": "./src/Field.jsx",
-    "./Dialog": "./src/Dialog.jsx"
+    "./Dialog": "./src/Dialog.jsx",
+    "./openPhoto.js": "./src/openPhoto.js"
   },
   "devDependencies": {
     "@storybook/addon-docs": "10.6.3",
