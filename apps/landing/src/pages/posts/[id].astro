@@ -2,6 +2,7 @@
 export const prerender = false;
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import PostActions from "../../islands/PostActions.vue";
 import { createPublicClient } from "../../publicApi.js";
 
 const id = Astro.params.id;
@@ -86,6 +87,12 @@ Astro.response.headers.set("Cache-Control", "public, max-age=60, s-maxage=60");
               ))}
             </dl>
           ) : null}
+          <PostActions
+            client:load
+            postId={id}
+            liked={post.liked_by_me}
+            likesCount={post.likes_count}
+          />
           {comments.length > 0 ? (
             <ul>
               {comments.map((comment) => (
