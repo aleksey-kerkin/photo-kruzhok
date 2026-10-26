@@ -11,3 +11,9 @@ def repo_root() -> Path:
 def test_readme_does_not_mention_passwords():
     text = (repo_root() / "README.md").read_text(encoding="utf-8")
     assert "password" not in text
+
+
+def test_readme_uses_the_english_name_photo_kruzhok():
+    text = (repo_root() / "README.md").read_text(encoding="utf-8")
+    assert "Photo Kruzhok" in text
+    assert "Photo circle" not in text

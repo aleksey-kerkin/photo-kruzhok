@@ -1,6 +1,6 @@
 # Фото-кружок
 
-Photo circle is a portfolio monorepo for a live photo-club demo. It contains a Django API, a React feed app, an Astro landing page, a Vue leader panel, and shared `ui` and `sdk` packages.
+Photo Kruzhok is a portfolio monorepo for a live photo-club demo. It contains a Django API, a React feed app, an Astro landing page, a Vue leader panel, and shared `ui` and `sdk` packages.
 
 [![CI](https://github.com/aleksey-kerkin/photo-kruzhok/actions/workflows/ci.yml/badge.svg)](https://github.com/aleksey-kerkin/photo-kruzhok/actions/workflows/ci.yml)
 [![coverage](https://img.shields.io/badge/coverage-gate-in%20CI-blue)](https://github.com/aleksey-kerkin/photo-kruzhok/actions/workflows/ci.yml)

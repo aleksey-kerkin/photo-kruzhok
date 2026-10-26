@@ -181,6 +181,6 @@ REST_FRAMEWORK = {
 }
 
 SPECTACULAR_SETTINGS = {
-    "TITLE": "Photo circle API",
+    "TITLE": "Photo Kruzhok API",
     "VERSION": "0.1.0",
 }

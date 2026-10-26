@@ -1,4 +1,4 @@
-# Photo circle portfolio design
+# Photo Kruzhok portfolio design
 
 Date: 2026-10-23
 
