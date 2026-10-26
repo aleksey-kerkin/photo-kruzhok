@@ -1,0 +1,11 @@
+---
+export const prerender = false;
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import UploadForm from "../../islands/UploadForm.vue";
+---
+
+<BaseLayout title="Новый снимок">
+  <div class="pk-column">
+    <UploadForm client:load />
+  </div>
+</BaseLayout>

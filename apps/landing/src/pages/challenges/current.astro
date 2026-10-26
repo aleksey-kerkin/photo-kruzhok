@@ -1,0 +1,11 @@
+---
+export const prerender = false;
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ChallengeActions from "../../islands/ChallengeActions.vue";
+---
+
+<BaseLayout title="Тема недели">
+  <div class="pk-column">
+    <ChallengeActions client:load />
+  </div>
+</BaseLayout>
