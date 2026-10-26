@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Link, Outlet } from "react-router-dom";
 
 export default function AppShell() {
@@ -14,7 +15,9 @@ export default function AppShell() {
         </nav>
       </header>
       <main>
-        <Outlet />
+        <Suspense fallback={<p>Загрузка…</p>}>
+          <Outlet />
+        </Suspense>
       </main>
     </div>
   );

@@ -37,7 +37,18 @@ export default function HomePage() {
       <ul className="pk-feed">
         {posts.map((post) => (
           <li key={post.id} className="pk-feed__card">
-            <p>{post.caption ?? post.text ?? `Пост ${post.id}`}</p>
+            <a href={`/posts/${post.id}`}>
+              {post.image ? (
+                <img
+                  className="pk-feed__image"
+                  src={post.image}
+                  alt={post.caption ?? `Фото ${post.id}`}
+                  width={post.width}
+                  height={post.height}
+                />
+              ) : null}
+              <p>{post.caption ?? post.text ?? `Пост ${post.id}`}</p>
+            </a>
             <button
               type="button"
               aria-pressed={post.liked_by_me}

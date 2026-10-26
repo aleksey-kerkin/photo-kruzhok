@@ -14,7 +14,15 @@ function makeFeedData(post) {
 
 describe("feed layout", () => {
   it("wraps posts in shared pk-feed layout classes", () => {
-    const post = { id: 1, caption: "Тест", likes_count: 0, liked_by_me: false };
+    const post = {
+      id: 1,
+      caption: "Утренний свет в парке",
+      image: "http://127.0.0.1:8000/media/posts/images/01.jpg",
+      width: 480,
+      height: 320,
+      likes_count: 0,
+      liked_by_me: false,
+    };
     const cache = new QueryClient();
     cache.setQueryData(FEED_QUERY_KEY, makeFeedData(post));
 
@@ -24,8 +32,13 @@ describe("feed layout", () => {
       </QueryClientProvider>,
     );
 
+    const image = container.querySelector(".pk-feed__image");
     expect(container.querySelector(".pk-feed")).not.toBeNull();
     expect(container.querySelector(".pk-feed__card")).not.toBeNull();
+    expect(image).not.toBeNull();
+    expect(image.getAttribute("alt")).toBe("Утренний свет в парке");
+    expect(image.getAttribute("src")).toBe(post.image);
+    expect(container.querySelector("a").getAttribute("href")).toBe("/posts/1");
   });
 });
 

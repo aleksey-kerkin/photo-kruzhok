@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 
 import AppShell from "./components/AppShell.jsx";
@@ -14,19 +14,17 @@ const RegisterPage = lazy(() => import("./pages/RegisterPage.jsx"));
 
 export default function App() {
   return (
-    <Suspense fallback={<p>Загрузка…</p>}>
-      <Routes>
-        <Route element={<AppShell />}>
-          <Route index element={<HomePage />} />
-          <Route path="posts/new" element={<NewPostPage />} />
-          <Route path="posts/:id" element={<PostPage />} />
-          <Route path="profiles/:username" element={<ProfilePage />} />
-          <Route path="profiles/me/edit" element={<EditProfilePage />} />
-          <Route path="challenges/current" element={<ChallengePage />} />
-          <Route path="login" element={<LoginPage />} />
-          <Route path="register" element={<RegisterPage />} />
-        </Route>
-      </Routes>
-    </Suspense>
+    <Routes>
+      <Route element={<AppShell />}>
+        <Route index element={<HomePage />} />
+        <Route path="posts/new" element={<NewPostPage />} />
+        <Route path="posts/:id" element={<PostPage />} />
+        <Route path="profiles/:username" element={<ProfilePage />} />
+        <Route path="profiles/me/edit" element={<EditProfilePage />} />
+        <Route path="challenges/current" element={<ChallengePage />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="register" element={<RegisterPage />} />
+      </Route>
+    </Routes>
   );
 }
