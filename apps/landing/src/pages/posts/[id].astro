@@ -76,7 +76,7 @@ Astro.response.headers.set("Cache-Control", "public, max-age=60, s-maxage=60");
               height={post.height ?? undefined}
             />
           ) : null}
-          {post.caption ? <p>{post.caption}</p> : null}
+          <h1>{post.caption ?? `Пост ${post.id}`}</h1>
           {exifRows.length > 0 ? (
             <dl>
               {exifRows.map(({ key, label, format }) => (

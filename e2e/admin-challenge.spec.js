@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("weekly theme page shows the Russian heading", async ({ page }) => {
-  await page.goto("/challenge");
+test("theme panel shows its heading", async ({ page }) => {
+  await page.goto("/panel/challenge");
   await expect(page.getByRole("heading", { name: "Тема" })).toBeVisible();
 });

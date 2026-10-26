@@ -21,14 +21,14 @@ export default defineConfig({
       testMatch: /landing-profile\.spec\.js/,
       use: { baseURL: LANDING },
     },
-    { name: "web-login", testMatch: /web-login\.spec\.js/, use: { baseURL: WEB } },
+    { name: "web-login", testMatch: /web-login\.spec\.js/, use: { baseURL: LANDING } },
     {
       name: "web-register",
       testMatch: /web-register\.spec\.js/,
       use: { baseURL: WEB },
     },
     { name: "web-feed", testMatch: /web-feed\.spec\.js/, use: { baseURL: WEB } },
-    { name: "web-post", testMatch: /web-post\.spec\.js/, use: { baseURL: WEB } },
+    { name: "web-post", testMatch: /web-post\.spec\.js/, use: { baseURL: LANDING } },
     {
       name: "web-profile",
       testMatch: /web-profile\.spec\.js/,
@@ -44,7 +44,7 @@ export default defineConfig({
     {
       name: "admin-challenge",
       testMatch: /admin-challenge\.spec\.js/,
-      use: { baseURL: ADMIN },
+      use: { baseURL: LANDING },
     },
     {
       name: "admin-moderation",
