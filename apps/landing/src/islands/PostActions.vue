@@ -17,6 +17,7 @@ const props = defineProps({
   },
 });
 
+const sessionLoading = ref(true);
 const isAuthenticated = ref(false);
 const liked = ref(props.liked);
 const likesCount = ref(props.likesCount);
@@ -25,6 +26,7 @@ const errorMessage = ref("");
 
 restoreAccessToken().then((token) => {
   isAuthenticated.value = token != null;
+  sessionLoading.value = false;
 });
 
 async function toggleLike() {
@@ -66,7 +68,8 @@ async function onCommentSubmit(event) {
 <template>
   <div>
     <p v-if="errorMessage">{{ errorMessage }}</p>
-    <template v-if="!isAuthenticated">
+    <p v-if="sessionLoading">Загрузка…</p>
+    <template v-else-if="!isAuthenticated">
       <p><a href="/login">Войти, чтобы оценить</a></p>
       <p><a href="/login">Войти, чтобы комментировать</a></p>
     </template>
