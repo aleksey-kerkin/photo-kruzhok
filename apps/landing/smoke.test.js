@@ -24,7 +24,13 @@ test("built home page contains Витрина and anya profile link", () => {
 });
 
 test("the build contains a post route and a profile route", () => {
-  const files = walk(new URL("./dist", import.meta.url).pathname);
-  assert.ok(files.some((file) => file.includes("posts")));
+  const distRoot = new URL("./dist", import.meta.url).pathname;
+  const files = walk(distRoot);
   assert.ok(files.some((file) => file.includes("profiles")));
+
+  const serverFiles = walk(join(distRoot, "server"));
+  assert.ok(
+    serverFiles.some((file) => readFileSync(file, "utf8").includes("Пост не найден")),
+    "expected post page in server build",
+  );
 });
