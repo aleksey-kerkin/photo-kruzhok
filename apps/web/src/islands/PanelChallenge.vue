@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
-import { getAccessToken, restoreAccessToken } from "./session.js";
+import { api, isApiError } from "./api.js";
+import { restoreAccessToken } from "./session.js";
 
 function isPermissionDenied(body) {
   return (
@@ -26,10 +27,7 @@ const votePending = ref(false);
 async function loadSubmissions(challengeId) {
   submissionsLoading.value = true;
   submissionsForbidden.value = false;
-  const response = await fetch(`/api/challenges/${challengeId}/submissions`, {
-    headers: { Authorization: `Bearer ${getAccessToken()}` },
-  });
-  const body = await response.json();
+  const body = await api.request(`/api/challenges/${challengeId}/submissions`);
   submissionsLoading.value = false;
   if (isPermissionDenied(body)) {
     submissionsForbidden.value = true;
@@ -46,16 +44,13 @@ onMounted(() => {
       return;
     }
     challengeLoading.value = true;
-    const response = await fetch("/api/challenges/current", {
-      headers: { Authorization: `Bearer ${getAccessToken()}` },
-    });
-    const body = await response.json();
+    const body = await api.request("/api/challenges/current");
     challengeLoading.value = false;
     if (isPermissionDenied(body)) {
       challengeForbidden.value = true;
       return;
     }
-    if (!response.ok) {
+    if (isApiError(body)) {
       challengeError.value = true;
       return;
     }
@@ -77,12 +72,9 @@ async function vote(submissionId) {
     return;
   }
   votePending.value = true;
-  await fetch(`/api/challenges/${challenge.value.id}/votes`, {
+  await api.request(`/api/challenges/${challenge.value.id}/votes`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${getAccessToken()}`,
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ submission_id: submissionId }),
   });
   votePending.value = false;

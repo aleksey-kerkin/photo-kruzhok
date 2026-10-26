@@ -13,7 +13,6 @@ const profile = await fetchProfile(client, username);
 const postsPage = profile ? await fetchProfilePosts(client, username) : null;
 const posts = postsPage?.results ?? [];
 const displayName = profile?.display_name ?? username;
-const webAppUrl = import.meta.env.PUBLIC_WEB_APP_URL ?? "http://localhost:5173";
 
 function postAlt(post) {
   if (post.caption) {
@@ -24,6 +23,7 @@ function postAlt(post) {
 ---
 
 <BaseLayout title={displayName}>
+  <div class="pk-column">
   <p><a href="/">На главную</a></p>
 
   {
@@ -60,8 +60,5 @@ function postAlt(post) {
       </ul>
     ) : null
   }
-
-  <p>
-    <a href={webAppUrl}>Открыть приложение</a>
-  </p>
+  </div>
 </BaseLayout>

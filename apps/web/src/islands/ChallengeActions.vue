@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
-import { getAccessToken, restoreAccessToken } from "./session.js";
+import { api, isApiError } from "./api.js";
+import { restoreAccessToken } from "./session.js";
 
 const sessionLoading = ref(true);
 const isAuthenticated = ref(false);
@@ -16,13 +17,11 @@ onMounted(() => {
     if (!token) {
       return;
     }
-    const response = await fetch("/api/challenges/current", {
-      headers: { Authorization: `Bearer ${getAccessToken()}` },
-    });
-    if (!response.ok) {
+    const body = await api.request("/api/challenges/current");
+    if (isApiError(body)) {
       return;
     }
-    challenge.value = await response.json();
+    challenge.value = body;
   });
 });
 
@@ -32,19 +31,12 @@ async function onSubmitPost(event) {
     return;
   }
   errorMessage.value = "";
-  const response = await fetch(
-    `/api/challenges/${challenge.value.id}/submissions`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getAccessToken()}`,
-      },
-      body: JSON.stringify({ post_id: Number(postId.value) }),
-    },
-  );
-  const body = await response.json();
-  if (!response.ok) {
+  const body = await api.request(`/api/challenges/${challenge.value.id}/submissions`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ post_id: Number(postId.value) }),
+  });
+  if (isApiError(body)) {
     errorMessage.value = body.message ?? "";
   }
 }
@@ -55,16 +47,12 @@ async function onVote(event) {
     return;
   }
   errorMessage.value = "";
-  const response = await fetch(`/api/challenges/${challenge.value.id}/votes`, {
+  const body = await api.request(`/api/challenges/${challenge.value.id}/votes`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${getAccessToken()}`,
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ submission_id: Number(submissionId.value) }),
   });
-  const body = await response.json();
-  if (!response.ok) {
+  if (isApiError(body)) {
     errorMessage.value = body.message ?? "";
   }
 }

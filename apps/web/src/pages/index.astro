@@ -16,8 +16,10 @@ try {
 ---
 
 <BaseLayout title="Фото-кружок">
-  <h1 class="pk-column">Фото-кружок</h1>
-  <h2>Витрина</h2>
+  <div class="pk-column">
+    <h1>Фото-кружок</h1>
+    <h2>Витрина</h2>
+  </div>
   <ul class="pk-grid">
     {
       posts.map((post) => (
@@ -29,15 +31,17 @@ try {
       ))
     }
   </ul>
-  <ul>
-    {
-      DEMO_USERNAMES.map((username) => (
-        <li>
-          <a href={`/profiles/${username}`}>{username}</a>
-        </li>
-      ))
-    }
-  </ul>
+  <div class="pk-column">
+    <ul>
+      {
+        DEMO_USERNAMES.map((username) => (
+          <li>
+            <a href={`/profiles/${username}`}>{username}</a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
 </BaseLayout>
 
 <script>

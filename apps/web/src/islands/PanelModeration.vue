@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
-import { getAccessToken, restoreAccessToken } from "./session.js";
+import { api, isApiError } from "./api.js";
+import { restoreAccessToken } from "./session.js";
 
 function isPermissionDenied(body) {
   return (
@@ -22,16 +23,13 @@ const restorePending = ref(false);
 async function loadHiddenPosts() {
   postsLoading.value = true;
   forbidden.value = false;
-  const response = await fetch("/api/posts?status=hidden", {
-    headers: { Authorization: `Bearer ${getAccessToken()}` },
-  });
-  const body = await response.json();
+  const body = await api.request("/api/posts?status=hidden");
   postsLoading.value = false;
   if (isPermissionDenied(body)) {
     forbidden.value = true;
     return;
   }
-  if (!response.ok) {
+  if (isApiError(body)) {
     loadError.value = true;
     return;
   }
@@ -51,10 +49,7 @@ onMounted(() => {
 
 async function restorePost(postId) {
   restorePending.value = true;
-  await fetch(`/api/posts/${postId}/restore`, {
-    method: "POST",
-    headers: { Authorization: `Bearer ${getAccessToken()}` },
-  });
+  await api.request(`/api/posts/${postId}/restore`, { method: "POST" });
   restorePending.value = false;
   await loadHiddenPosts();
 }

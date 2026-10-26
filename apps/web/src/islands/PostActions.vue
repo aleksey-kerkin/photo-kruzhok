@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
-import { getAccessToken, restoreAccessToken } from "./session.js";
+import { api, isApiError } from "./api.js";
+import { restoreAccessToken } from "./session.js";
 
 const props = defineProps({
   postId: {
@@ -34,12 +35,8 @@ onMounted(() => {
 async function toggleLike() {
   errorMessage.value = "";
   const method = liked.value ? "DELETE" : "PUT";
-  const response = await fetch(`/api/posts/${props.postId}/like`, {
-    method,
-    headers: { Authorization: `Bearer ${getAccessToken()}` },
-  });
-  const body = await response.json();
-  if (!response.ok) {
+  const body = await api.request(`/api/posts/${props.postId}/like`, { method });
+  if (isApiError(body)) {
     errorMessage.value = body.message ?? "";
     return;
   }
@@ -50,16 +47,12 @@ async function toggleLike() {
 async function onCommentSubmit(event) {
   event.preventDefault();
   errorMessage.value = "";
-  const response = await fetch(`/api/posts/${props.postId}/comments`, {
+  const body = await api.request(`/api/posts/${props.postId}/comments`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${getAccessToken()}`,
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ text: commentText.value }),
   });
-  const body = await response.json();
-  if (!response.ok) {
+  if (isApiError(body)) {
     errorMessage.value = body.message ?? "";
     return;
   }

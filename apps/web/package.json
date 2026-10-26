@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "astro dev --port 4321",
     "lint": "eslint smoke.test.js astro.config.mjs src",
-    "test": "node --test node-version.test.js && pnpm run build && node --test smoke.test.js",
+    "test": "node --test node-version.test.js src/islands/*.test.js && pnpm run build && node --test smoke.test.js",
     "build": "astro build && cp dist/client/index.html dist/index.html",
     "preview": "astro preview --port 4321"
   },
