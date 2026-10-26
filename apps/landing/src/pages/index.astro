@@ -3,71 +3,39 @@ export const prerender = true;
 
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { DEMO_USERNAMES } from "../demoUsers.js";
-import { createPublicClient, fetchProfile } from "../publicApi.js";
+import { createPublicClient } from "../publicApi.js";
 
-const webAppUrl = import.meta.env.PUBLIC_WEB_APP_URL ?? "http://localhost:5173";
 const client = createPublicClient();
-const profiles = await Promise.all(
-  DEMO_USERNAMES.map(async (username) => {
-    const profile = await fetchProfile(client, username);
-    return {
-      username,
-      label: profile?.display_name ?? username,
-    };
-  }),
-);
-
-const showcaseItems = [
-  { src: "/photos/01.jpg", alt: "Кадр витрины 1" },
-  { src: "/photos/02.jpg", alt: "Кадр витрины 2" },
-  { src: "/photos/03.jpg", alt: "Кадр витрины 3" },
-];
+let posts = [];
+try {
+  const page = await client.request("/api/posts");
+  posts = Array.isArray(page?.results) ? page.results : [];
+} catch {
+  posts = [];
+}
 ---
 
 <BaseLayout title="Фото-кружок">
-  <header>
-    <h1>Фото-кружок</h1>
-    <p>
-      <a href={webAppUrl}>Открыть приложение</a>
-    </p>
-  </header>
-
-  <section>
-    <h2>Витрина</h2>
-    <ul class="landing-showcase">
-      {
-        showcaseItems.map((item, index) => (
-          <li>
-            <img
-              src={item.src}
-              alt={item.alt}
-              width="480"
-              height="320"
-              {...(index === 0
-                ? { fetchpriority: "high" }
-                : { loading: "lazy" })}
-            />
-          </li>
-        ))
-      }
-    </ul>
-  </section>
-
-  <section>
-    <h2>Анонсы</h2>
-    <p>Анонсы появятся здесь, когда API подключён к сборке.</p>
-  </section>
-
-  <section>
-    <h2>Профили</h2>
-    <ul class="landing-profiles">
-      {
-        profiles.map(({ username, label }) => (
-          <li>
-            <a href={`/profiles/${username}`}>{label}</a>
-          </li>
-        ))
-      }
-    </ul>
-  </section>
+  <h1 class="pk-column">Фото-кружок</h1>
+  <h2>Витрина</h2>
+  <ul class="pk-grid">
+    {
+      posts.map((post) => (
+        <li class="pk-grid__item">
+          <a href={`/posts/${post.id}`}>
+            <img src={post.image} alt={post.caption || `Фото ${post.id}`} width={post.width} height={post.height} />
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+  <ul>
+    {
+      DEMO_USERNAMES.map((username) => (
+        <li>
+          <a href={`/profiles/${username}`}>{username}</a>
+        </li>
+      ))
+    }
+  </ul>
 </BaseLayout>
