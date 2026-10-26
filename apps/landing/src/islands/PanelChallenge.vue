@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { getAccessToken, restoreAccessToken } from "./session.js";
 
 function isPermissionDenied(body) {
@@ -38,28 +38,30 @@ async function loadSubmissions(challengeId) {
   submissions.value = body.results ?? [];
 }
 
-restoreAccessToken().then(async (token) => {
-  isAuthenticated.value = token != null;
-  sessionLoading.value = false;
-  if (!token) {
-    return;
-  }
-  challengeLoading.value = true;
-  const response = await fetch("/api/challenges/current", {
-    headers: { Authorization: `Bearer ${getAccessToken()}` },
+onMounted(() => {
+  restoreAccessToken().then(async (token) => {
+    isAuthenticated.value = token != null;
+    sessionLoading.value = false;
+    if (!token) {
+      return;
+    }
+    challengeLoading.value = true;
+    const response = await fetch("/api/challenges/current", {
+      headers: { Authorization: `Bearer ${getAccessToken()}` },
+    });
+    const body = await response.json();
+    challengeLoading.value = false;
+    if (isPermissionDenied(body)) {
+      challengeForbidden.value = true;
+      return;
+    }
+    if (!response.ok) {
+      challengeError.value = true;
+      return;
+    }
+    challenge.value = body;
+    await loadSubmissions(body.id);
   });
-  const body = await response.json();
-  challengeLoading.value = false;
-  if (isPermissionDenied(body)) {
-    challengeForbidden.value = true;
-    return;
-  }
-  if (!response.ok) {
-    challengeError.value = true;
-    return;
-  }
-  challenge.value = body;
-  await loadSubmissions(body.id);
 });
 
 function submissionCaption(submission) {

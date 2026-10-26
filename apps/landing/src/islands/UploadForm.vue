@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { getAccessToken, restoreAccessToken } from "./session.js";
 
 const sessionLoading = ref(true);
@@ -7,9 +7,11 @@ const isAuthenticated = ref(false);
 const caption = ref("");
 const errorMessage = ref("");
 
-restoreAccessToken().then((token) => {
-  isAuthenticated.value = token != null;
-  sessionLoading.value = false;
+onMounted(() => {
+  restoreAccessToken().then((token) => {
+    isAuthenticated.value = token != null;
+    sessionLoading.value = false;
+  });
 });
 
 async function onSubmit(event) {

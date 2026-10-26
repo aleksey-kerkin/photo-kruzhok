@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { getAccessToken, restoreAccessToken } from "./session.js";
 
 function isPermissionDenied(body) {
@@ -38,13 +38,15 @@ async function loadHiddenPosts() {
   posts.value = body.results ?? [];
 }
 
-restoreAccessToken().then(async (token) => {
-  isAuthenticated.value = token != null;
-  sessionLoading.value = false;
-  if (!token) {
-    return;
-  }
-  await loadHiddenPosts();
+onMounted(() => {
+  restoreAccessToken().then(async (token) => {
+    isAuthenticated.value = token != null;
+    sessionLoading.value = false;
+    if (!token) {
+      return;
+    }
+    await loadHiddenPosts();
+  });
 });
 
 async function restorePost(postId) {

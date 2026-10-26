@@ -9,6 +9,9 @@ export function resetAccessToken() {
 }
 
 export async function restoreAccessToken() {
+  if (typeof window === "undefined") {
+    return null;
+  }
   if (accessToken) {
     return accessToken;
   }

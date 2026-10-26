@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { getAccessToken, restoreAccessToken } from "./session.js";
 
 const props = defineProps({
@@ -24,9 +24,11 @@ const likesCount = ref(props.likesCount);
 const commentText = ref("");
 const errorMessage = ref("");
 
-restoreAccessToken().then((token) => {
-  isAuthenticated.value = token != null;
-  sessionLoading.value = false;
+onMounted(() => {
+  restoreAccessToken().then((token) => {
+    isAuthenticated.value = token != null;
+    sessionLoading.value = false;
+  });
 });
 
 async function toggleLike() {

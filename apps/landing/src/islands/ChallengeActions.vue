@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { getAccessToken, restoreAccessToken } from "./session.js";
 
 const sessionLoading = ref(true);
@@ -9,19 +9,21 @@ const postId = ref("");
 const submissionId = ref("");
 const errorMessage = ref("");
 
-restoreAccessToken().then(async (token) => {
-  isAuthenticated.value = token != null;
-  sessionLoading.value = false;
-  if (!token) {
-    return;
-  }
-  const response = await fetch("/api/challenges/current", {
-    headers: { Authorization: `Bearer ${getAccessToken()}` },
+onMounted(() => {
+  restoreAccessToken().then(async (token) => {
+    isAuthenticated.value = token != null;
+    sessionLoading.value = false;
+    if (!token) {
+      return;
+    }
+    const response = await fetch("/api/challenges/current", {
+      headers: { Authorization: `Bearer ${getAccessToken()}` },
+    });
+    if (!response.ok) {
+      return;
+    }
+    challenge.value = await response.json();
   });
-  if (!response.ok) {
-    return;
-  }
-  challenge.value = await response.json();
 });
 
 async function onSubmitPost(event) {
