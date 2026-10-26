@@ -1,8 +1,0 @@
-{
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "$API_PROXY_ORIGIN/api/$1"
-    }
-  ]
-}

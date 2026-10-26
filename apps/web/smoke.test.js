@@ -10,9 +10,9 @@ function walk(dir) {
   });
 }
 
-test("landing shell is present", () => {
+test("web shell is present", () => {
   const pkg = JSON.parse(readFileSync(new URL("./package.json", import.meta.url), "utf8"));
-  assert.equal(pkg.name, "@photo-kruzhok/landing");
+  assert.equal(pkg.name, "@photo-kruzhok/web");
 });
 
 test("built home page contains Витрина and anya profile link", () => {

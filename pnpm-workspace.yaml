@@ -1,7 +1,5 @@
 packages:
   - "apps/web"
-  - "apps/landing"
-  - "apps/admin"
   - "packages/*"
 
 allowBuilds:

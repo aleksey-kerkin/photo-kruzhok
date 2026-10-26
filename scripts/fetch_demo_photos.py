@@ -10,7 +10,7 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = ROOT / "apps" / "api" / "fixtures" / "photos"
-LANDING = ROOT / "apps" / "landing" / "public" / "photos"
+LANDING = ROOT / "apps" / "web" / "public" / "photos"
 COUNT = 24
 LONG_EDGE = 480
 
