@@ -11,9 +11,11 @@
   },
   "dependencies": {
     "@astrojs/node": "11.1.9",
+    "@astrojs/vue": "7.1.2",
     "@photo-kruzhok/sdk": "workspace:*",
     "@photo-kruzhok/ui": "workspace:*",
     "astro": "7.4.1",
-    "sass": "1.106.1"
+    "sass": "1.106.1",
+    "vue": "3.5.44"
   }
 }
